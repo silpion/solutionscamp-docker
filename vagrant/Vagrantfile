@@ -1,0 +1,76 @@
+# vim: set ft=ruby ts=2 sw=2 et:
+
+
+if Vagrant::VERSION <= '1.1.0' then
+  puts "This project does not support Vagrant version <= 1.1.0"
+  exit 1
+end
+
+
+Vagrant.configure('2') do |config|
+  # TODO - image must get hosted on AWS
+  config.vm.box = 'precise-raring'
+  config.vm.box_url = 'http://openfiler.office.silpion.de/mnt/vg_md1/vol1/vagrant/ubunt/ubuntu-12.04-cloudimg-raring.box'
+
+
+  # mount local directories into the VM
+  puppet = File.dirname(__FILE__) + '/puppet'
+  puppet_modules = [
+    ["#{puppet}/modules/silpion-docker", '/opt/puppet/modules/docker'],
+    ["#{puppet}/modules/silpion-solutionscamphacks", '/opt/puppet/modules/solutionscamphacks'],
+    ["#{puppet}/modules/puppetlabs-apt", '/opt/puppet/modules/apt'],
+    ["#{puppet}/modules/puppetlabs-stdlib", '/opt/puppet/modules/stdlib']
+  ]
+  puppet_modules.each do |sf|
+    config.vm.synced_folder sf[0], sf[1], :extra => 'dmode=755,fmode=644'
+  end
+
+
+  # VM provisioning with Puppet
+  config.vm.provision :puppet do |puppet|
+    puppet.options = ['--modulepath', '/opt/puppet/modules']
+    puppet.manifests_path = 'puppet/manifests'
+    puppet.manifest_file = 'site.pp'
+  end
+
+
+  # node definitions
+  #   index server
+  config.vm.define :idx do |scdidx|
+    scdidx.vm.hostname = 'scdidx' # solutionscamp docker index
+    scdidx.vm.network :private_network, ip: '192.168.111.123'
+
+    scdidx.vm.provider :virtualbox do |vb|
+      vb.customize [
+        'modifyvm', :id, '--name', 'scdidx', '--memory', '512', '--cpus', '1'
+      ]
+    end
+  end # index server
+
+
+  #   application server
+  config.vm.define :app do |scdapp|
+    scdapp.vm.hostname = 'scdapp' # solutionscamp docker application
+    scdapp.vm.network :private_network, ip: '192.168.111.223'
+
+    scdapp.vm.provider :virtualbox do |vb|
+      vb.customize [
+        'modifyvm', :id, '--name', 'scdapp', '--memory', '1024', '--cpus', '1'
+      ]
+    end
+  end # application server
+
+
+  #   administrative work station
+  config.vm.define :adm do |scdadm|
+    scdadm.vm.hostname = 'scdadm' # solutionscamp docker administration
+    scdadm.vm.network :private_network, ip: '192.168.111.231'
+
+    scdadm.vm.provider :virtualbox do |vb|
+      vb.customize [
+        'modifyvm', :id, '--name', 'scdadm', '--memory', '1024', '--cpus', '1'
+      ]
+    end
+  end # administrative work station
+
+end

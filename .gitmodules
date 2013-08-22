@@ -1,0 +1,9 @@
+[submodule "vagrant/puppet/modules/puppetlabs-apt"]
+	path = vagrant/puppet/modules/puppetlabs-apt
+	url = https://github.com/puppetlabs/puppetlabs-apt
+[submodule "vagrant/puppet/modules/puppetlabs-stdlib"]
+	path = vagrant/puppet/modules/puppetlabs-stdlib
+	url = https://github.com/puppetlabs/puppetlabs-stdlib
+[submodule "vagrant/puppet/modules/silpion-docker"]
+	path = vagrant/puppet/modules/silpion-docker
+	url = https://github.com/silpion/garethr-docker.git
