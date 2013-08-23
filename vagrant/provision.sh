@@ -27,7 +27,7 @@ _networking()
   _iface='eth2'
   $cmd_ip addr replace ${_ip}/${_mask} dev $_iface || true
   $cmd_ip link set dev $_iface up || true
-  $cmd_ip route replace $_net dev $_iface || true
+  $cmd_ip route replace ${_net}/${_mask} via $_ip dev $_iface || true
 }
 
 
