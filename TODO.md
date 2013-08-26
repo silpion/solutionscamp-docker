@@ -15,9 +15,10 @@
 !       - install docker
 !       - fetch idx con
 ?       - start idx con
-      - ws
+      - adm
 !       - install docker
-*       - build app con
+!       - build app con
+*       - tag/push
       - app
 !       - install docker
 (!)     - docker pull app con
@@ -27,7 +28,7 @@
   - docker
 !   - provide ready to go idx con (samalba/docker-registry)
 !     - host idx con on aws
-*   - build app con automagically with Dockerfile
+!   - build app con automagically with Dockerfile
 
 
   - slides
