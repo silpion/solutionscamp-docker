@@ -10,7 +10,7 @@ end
 Vagrant.configure('2') do |config|
   # TODO - image must get hosted on AWS
   config.vm.box = 'precise-raring'
-  config.vm.box_url = 'http://openfiler.office.silpion.de/mnt/vg_md1/vol1/vagrant/ubunt/ubuntu-12.04-cloudimg-raring.box'
+  config.vm.box_url = 'http://openfiler.office.silpion.de/mnt/vg_md1/vol1/vagrant/ubuntu/ubuntu-12.04-cloudimg-raring.box'
 
 
   # mount local directories into the VM
