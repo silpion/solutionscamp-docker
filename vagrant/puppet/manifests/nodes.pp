@@ -1,9 +1,10 @@
 node base{
-  include docker
-  include solutionscamphacks
+  class { 'docker': }
+    ->
+  class { 'solutionscamphacks': }
 }
 
-node scdidx inherits base{
+node scdreg inherits base{
 
   docker::image{'samalba/docker-registry':
     ensure    => present,
@@ -11,6 +12,7 @@ node scdidx inherits base{
 
   docker::run{'registry':
     image     => 'samalba/docker-registry',
+    #command   => 'gunicorn --access-logfile - --log-level debug --debug -b 0.0.0.0:80 -w 1 wsgi:application',
     command   => '',
     ports     => ['5000:5000'],
     require   => Docker::Image['samalba/docker-registry'],
@@ -20,8 +22,7 @@ node scdidx inherits base{
 
 node scdapp inherits base{
 
-  docker::image{'silpion/jenkins':
-    registry  => 'scdidx:5000',
+  docker::image{'registry.silpion.de:5000/silpion/jenkins':
     ensure    => present,
   }
 
@@ -29,13 +30,17 @@ node scdapp inherits base{
     image     => 'silpion/jenkins',
     command   => '/usr/local/sbin/jenkins.sh',
     ports     => ['8080:8080', '8443:8443'],
-    require   => Docker::Image['silpion/jenkins'],
+    require   => Docker::Image['registry.silpion.de:5000/silpion/jenkins'],
   }
 
 }
 
-node scdadm inherits base{
+node scdadm{
 
-  include solutionscamphacks::adm
+  class {'docker': }
+    ->
+  class {'solutionscamphacks': }
+    ->
+  class {'solutionscamphacks::adm': }
 
 }
