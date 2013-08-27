@@ -1,24 +1,26 @@
   - container
-!   - idx (docker index server)
-    - app (generated con for an application)
+!   - reg (docker registry server)
+!   - app (generated con for an application)
 
 
 ! - vagrant multi host project
     - host Ubuntu 12.04/raring base box an aws
 !   - vagrant multi host networking
 !   - 3 hosts
-!     - idx (Ubuntu 12.04/raring, silpion/dockeridx)
+!     - reg (Ubuntu 12.04/raring, silpion/dockerreg)
 !     - ws  (Ubuntu 12.04/raring, build app con with Dockerfile)
 !     - app (Ubuntu 12.04/raring, run app con)
     - provisioning
-      - idx
+      - reg
 !       - install docker
-!       - fetch idx con
-?       - start idx con
+!       - fetch reg con
+!       - start reg con
       - adm
 !       - install docker
 !       - build app con
-*       - tag/push
+!       - tag
+*       - push
+          - verify: https://github.com/dotcloud/docker-registry/tree/master/contrib/golang_impl
       - app
 !       - install docker
 (!)     - docker pull app con
@@ -26,10 +28,11 @@
 
 
   - docker
-!   - provide ready to go idx con (samalba/docker-registry)
-!     - host idx con on aws
+!   - provide ready to go reg con (samalba/docker-registry)
+!     - host reg con on aws
 !   - build app con automagically with Dockerfile
 
 
   - slides
     - showoff?!
+    - keynote
