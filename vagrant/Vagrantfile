@@ -1,4 +1,5 @@
 # vim: set ft=ruby ts=2 sw=2 et:
+# -*- mode: ruby -*-
 
 
 if Vagrant::VERSION <= '1.1.0' then
@@ -33,18 +34,18 @@ Vagrant.configure('2') do |config|
 
 
   # node definitions
-  #   index server
-  config.vm.define :idx do |scdidx|
-    scdidx.vm.hostname = 'scdidx' # solutionscamp docker index
-    scdidx.vm.network :private_network, ip: '10.11.12.13', netmask: '255.255.255.248'
-    scdidx.vm.network :forwarded_port, :host => 5000, :guest => 5000
+  #   registry server
+  config.vm.define :reg do |scdreg|
+    scdreg.vm.hostname = 'scdreg' # solutionscamp docker registry
+    scdreg.vm.network :private_network, ip: '10.11.12.13', netmask: '255.255.255.248'
+    scdreg.vm.network :forwarded_port, :host => 5000, :guest => 5000
 
-    scdidx.vm.provider :virtualbox do |vb|
+    scdreg.vm.provider :virtualbox do |vb|
       vb.customize [
-        'modifyvm', :id, '--name', 'scdidx', '--memory', '512', '--cpus', '1'
+        'modifyvm', :id, '--name', 'scdreg', '--memory', '512', '--cpus', '1'
       ]
     end
-  end # index server
+  end # registry server
 
 
   #   application server
