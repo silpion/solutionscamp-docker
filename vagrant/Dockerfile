@@ -8,7 +8,6 @@ MAINTAINER Mark Kusch "mark.kusch@silpion.de"
 # install everything required to run jenkins
 #   provide static files for required system configuration
 ADD assets/jenkins-ci.org.gpg.pub /tmp/jenkins-ci.org.gpg.pub
-ADD assets/etc/apt/apt.conf.d/99silpion /etc/apt/apt.conf.d/99silpion
 ADD assets/etc/apt/sources.list.d/jenkins-ci.list /etc/apt/sources.list.d/jenkins-ci.list
 ADD assets/usr/local/sbin/jenkins.sh /usr/local/sbin/jenkins.sh
 #   install jenkins and perform a packages cache cleanup
