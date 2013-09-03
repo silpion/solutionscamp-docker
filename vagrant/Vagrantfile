@@ -1,0 +1,79 @@
+# vim: set ft=ruby ts=2 sw=2 et:
+# -*- mode: ruby -*-
+
+
+if Vagrant::VERSION <= '1.1.0' then
+  puts "This project does not support Vagrant version <= 1.1.0"
+  exit 1
+end
+
+
+Vagrant.configure('2') do |config|
+  # TODO - image must get hosted on AWS
+  config.vm.box = 'precise-raring'
+  config.vm.box_url = 'http://openfiler.office.silpion.de/mnt/vg_md1/vol1/vagrant/ubuntu/ubuntu-12.04-cloudimg-raring.box'
+
+
+  # mount local directories into the VM
+  puppet = File.dirname(__FILE__) + '/puppet'
+  puppet_modules = [
+    ["#{puppet}/modules/silpion-docker", '/opt/puppet/modules/docker'],
+    ["#{puppet}/modules/silpion-solutionscamphacks", '/opt/puppet/modules/solutionscamphacks'],
+    ["#{puppet}/modules/puppetlabs-apt", '/opt/puppet/modules/apt'],
+    ["#{puppet}/modules/puppetlabs-stdlib", '/opt/puppet/modules/stdlib']
+  ]
+  puppet_modules.each do |sf|
+    config.vm.synced_folder sf[0], sf[1], :extra => 'dmode=755,fmode=644'
+  end
+
+
+  # VM provisioning with a Shell script
+  #   This will use Puppet for provisioning and provide some simple/fast
+  #   hacks to fix up networking configuration.
+  config.vm.provision :shell, :path => 'provision.sh'
+
+
+  # node definitions
+  #   registry server
+  config.vm.define :reg do |scdreg|
+    scdreg.vm.hostname = 'scdreg' # solutionscamp docker registry
+    scdreg.vm.network :private_network, ip: '10.11.12.13', netmask: '255.255.255.248'
+    scdreg.vm.network :forwarded_port, :host => 5000, :guest => 5000
+
+    scdreg.vm.provider :virtualbox do |vb|
+      vb.customize [
+        'modifyvm', :id, '--name', 'scdreg', '--memory', '512', '--cpus', '1'
+      ]
+    end
+  end # registry server
+
+
+  #   application server
+  config.vm.define :app do |scdapp|
+    scdapp.vm.hostname = 'scdapp' # solutionscamp docker application
+    scdapp.vm.network :private_network, ip: '10.11.12.12', netmask: '255.255.255.248'
+    [8080, 8443].each do |port|
+      scdapp.vm.network :forwarded_port, :host => port, :guest => port
+    end
+
+    scdapp.vm.provider :virtualbox do |vb|
+      vb.customize [
+        'modifyvm', :id, '--name', 'scdapp', '--memory', '1024', '--cpus', '1'
+      ]
+    end
+  end # application server
+
+
+  #   administrative work station
+  config.vm.define :adm do |scdadm|
+    scdadm.vm.hostname = 'scdadm' # solutionscamp docker administration
+    scdadm.vm.network :private_network, ip: '10.11.12.11', netmask: '255.255.255.248'
+
+    scdadm.vm.provider :virtualbox do |vb|
+      vb.customize [
+        'modifyvm', :id, '--name', 'scdadm', '--memory', '1024', '--cpus', '1'
+      ]
+    end
+  end # administrative work station
+
+end
