@@ -13,14 +13,6 @@
 #
 class solutionscamphacks::adm {
 
-  file{'/root/.dockercfg':
-    ensure      => present,
-    owner       => 'root',
-    group       => 'root',
-    mode        => '0600',
-    content     => 'auth = silpion\nmail = docker@silpion.de'
-  }
-
   # build a docker container for running jenkins
   # tag that image for our private registry
   # push that image to our private registry
@@ -38,8 +30,8 @@ class solutionscamphacks::adm {
       require   => Exec['docker build -t silpion/jenkins:solutionscamp'];
 
     'docker push registry.silpion.de:5000/silpion/jenkins':
+      timeout   => '3600',
       require   => [
-          File['/root/.dockercfg'],
           Exec['docker tag registry.silpion.de:5000/silpion/jenkins']
         ];
   }
