@@ -1,4 +1,4 @@
-  - container
+! - container
 !   - reg (docker registry server)
 !   - app (generated con for an application)
 
@@ -11,28 +11,26 @@
 !     - ws  (Ubuntu 12.04/raring, build app con with Dockerfile)
 !     - app (Ubuntu 12.04/raring, run app con)
     - provisioning
-      - reg
+!     - reg
 !       - install docker
 !       - fetch reg con
 !       - start reg con
-      - adm
+!     - adm
 !       - install docker
 !       - build app con
 !       - tag
-*       - push
+!       - push
           - verify: https://github.com/dotcloud/docker-registry/tree/master/contrib/golang_impl
-      - app
+!     - app
 !       - install docker
-(!)     - docker pull app con
-(!)     - docker run app con
+!       - docker pull app con
+!       - docker run app con
 
 
-  - docker
+! - docker
 !   - provide ready to go reg con (samalba/docker-registry)
-!     - host reg con on aws
 !   - build app con automagically with Dockerfile
 
 
   - slides
-    - showoff?!
-    - keynote
+*   - keynote
