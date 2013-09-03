@@ -17,26 +17,17 @@ used. This project's Vagrant configuration only supports VirtualBox.
 
 Three virtual machines managed through Vagrant shall provide an
 environment to learn you some docker.
-
 There'll be a workstation, where you can play and generate docker
 container images.
-
-There'll be an index server, which can be used to push and pull
-images to/from.**
-
+There'll be a registry server, which can be used to push and pull
+images to/from.
 There'll be an application server, where the generated containers can
 get pulled to and started on.
 
 
-** The index server is prepared and pre-configured for this space. It
-  uses an AWS storage to host container images. The AWS account in
-  question will get disabled shortly after solutionscamp and render
-  the pre-configured docker image unusable without modification.
-  To set up an index server yourself see 
-  [dotcloud/docker-registry](https://github.com/dotcloud/docker-registry).
+# Getting started
 
-
-# Submodules
+## Submodules
 
 This repository uses git submodules to integrate puppet modules
 required to provision the nodes.
@@ -46,42 +37,44 @@ required to provision the nodes.
     git submodule update
     ```
 
-
-# Ramping up
+## Ramping up
 
 Go to the vagrant directory and fire up the machines consecutively.
-* Index server
+Wait for the provisioning to finish. This may take some time depending
+on your internet connection speed.
+
+* Registry server
 * Administrative workstation
 * Application server
 
     ```bash
     cd vagrant
-    vagrant up idx
+    vagrant up reg
     vagrant up adm
     vagrant up app
     ```
 
+# Vagrant configuration
 
-# Remarks
+Vagrant creates 3 machines with host internal networking configuration.
+Internal network is set up to use 10.11.12.8/29. Vagrant will configure
+your host to use the first available IP in that network.
 
-Using Vagrant with VirtualBox in private network mode triggers a number
-of bugs possibly related to any component of this project. These
-components may be any of
-* [vagrant](http://vagrantup.com)
-* [VirtualBox](https://www.virtualbox.org)
-* [Ubuntu](http://www.ubuntu.com)
+* reg
+* adm
+* app
 
-In general whenever possible use VirtualBox internal NAT for networking
-configuration.
+Vagrant does not touch the hosts DNS configuration. If you want to
+access those VMs you'll have to stick with IPs or modify your DNS
+configuration yourself.
 
-## Waiting 120 seconds...
+The following configuration gets applied to the VMs:
 
-On any VM startup using Vagrant except for the very first one, booting
-Ubuntu feels to take hours.
-This seems related to bugs in VirtualBox private network mode. To fix
-this issue it would be required to configure the box running in
-VirtualBox and exporting it with exact that configuration, which drives
-using Vagrant ad absurdum.
+| Host | Internal DNS alias  | IP          |
+| ---- | ------------------- | ----------- |
+| reg  | registry.silpion.de | 10.11.12.13 |
+| adm  | -                   | 10.11.12.12 |
+| app  | app.silpion.de      | 10.11.12.11 |
 
 
 <!-- vim: set nofen ts=4 sw=4 et: -->
