@@ -10,7 +10,7 @@ Material for the docker space at solutionscamp 2013
 - ([virtualbox](https://www.virtualbox.org/))
 
 Any system supported by Vagrant to manage virtual machines can be
-used. This project's Vagrant configuration only supports VirtualBox.
+used. This project's Vagrant configuration supports VirtualBox only.
 
 
 # Target
