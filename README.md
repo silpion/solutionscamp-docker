@@ -32,6 +32,7 @@ get pulled to and started on.
 This repository uses git submodules to integrate puppet modules
 required to provision the nodes.
 
+
     ```bash
     git submodule init
     git submodule update
@@ -46,6 +47,7 @@ on your internet connection speed.
 * Registry server
 * Administrative workstation
 * Application server
+
 
     ```bash
     cd vagrant
