@@ -31,6 +31,7 @@ node scdapp{
 
   docker::run{'jenkins':
     image     => 'registry.silpion.de:5000/silpion/jenkins',
+    hostname  => 'jenkins',
     command   => '/usr/local/sbin/jenkins.sh',
     ports     => ['8080:8080', '8443:8443'],
     require   => Docker::Image['registry.silpion.de:5000/silpion/jenkins'],
