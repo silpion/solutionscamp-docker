@@ -22,7 +22,7 @@ Vagrant.configure('2') do |config|
     ["#{puppet}/modules/puppetlabs-stdlib", '/opt/puppet/modules/stdlib']
   ]
   puppet_modules.each do |sf|
-    config.vm.synced_folder sf[0], sf[1], :extra => 'dmode=755,fmode=644'
+    config.vm.synced_folder sf[0], sf[1], :mount_options => ['dmode=755', 'fmode=644']
   end
 
 
