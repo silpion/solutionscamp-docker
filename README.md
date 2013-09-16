@@ -1,7 +1,10 @@
 # solutionscamp-docker
 
 Material for the docker space at solutionscamp 2013
+The solutionscamp presentation is in the following folder for download
+avaiable:
 
+[Solutionscamp 2013 - Docker.io](https://www.dropbox.com/s/ujc89m8e2etrh48/Docker_local.pdf)
 
 # Requirements
 
