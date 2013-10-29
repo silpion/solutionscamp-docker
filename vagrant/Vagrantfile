@@ -10,7 +10,7 @@ end
 
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise-raring'
-  config.vm.box_url = 'https://dl.dropboxusercontent.com/s/k345naoddemcjb8/ubuntu-12.04-cloudimg-raring.box'
+  config.vm.box_url = 'http://vagrant.silpion.de/boxes/ubuntu-12.04-cloudimg-raring.box'
 
 
   # mount local directories into the VM
